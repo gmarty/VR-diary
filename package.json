@@ -1,0 +1,16 @@
+{
+  "name": "VR-scenes",
+  "version": "0.0.0",
+  "description": "VR scenes from the world",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:gmarty/VR-scenes.git",
+    "type": "git"
+  },
+  "author": "Guillaume Marty <edo999@gmail.com>",
+  "license": "MPL-2.0",
+  "dependencies": {
+    "aframe": "^0.3.2",
+    "aframe-bmfont-text-component": "^0.1.4"
+  }
+}
