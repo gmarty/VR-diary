@@ -1,3 +1,3 @@
 # VR Diary (VRにっき)
 
-> Exploring personal experiences through virtual reality.
+> Sharing personal experiences through virtual reality.

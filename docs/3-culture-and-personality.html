@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>VR View - Culture and personality</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no,minimal-ui">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="black">
+<script src="js/aframe.min.js"></script>
+<script>
+  AFRAME.registerComponent('change-culture', {
+    schema: {
+      value: { default: 'ja' },
+    },
+
+    init: function() {
+      this.mouseenter = this.mouseenter.bind(this);
+      this.el.addEventListener('mouseenter', this.mouseenter);
+      this.el.addEventListener('click', this.mouseenter);
+      this.audioCtx = 'AudioContext' in window ? new AudioContext() : null;
+      this.jaAudioBuffer = null;
+      this.enAudioBuffer = null;
+      this.bufferSource = null;
+
+      if (!this.audioCtx) {
+        throw new Error('Web Audio API is not supported.');
+      }
+
+      fetch('audio/ja.mp3')
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(res.status);
+          }
+
+          return res.arrayBuffer();
+        })
+        .then((arrayBuffer) => {
+          this.audioCtx.decodeAudioData(arrayBuffer, (buffer) => {
+            this.jaAudioBuffer = buffer;
+          }, (err) => {
+            console.error('The audio buffer could not be decoded.', err);
+          });
+        });
+
+      fetch('audio/en.mp3')
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(res.status);
+          }
+
+          return res.arrayBuffer();
+        })
+        .then((arrayBuffer) => {
+          this.audioCtx.decodeAudioData(arrayBuffer, (buffer) => {
+            this.enAudioBuffer = buffer;
+          }, (err) => {
+            console.error('The audio buffer could not be decoded.', err);
+          });
+        });
+    },
+
+    mouseenter: function() {
+      const data = this.data.value;
+      const sky = document.querySelector('a-sky');
+      sky.setAttribute('src', '#' + data + '-culture');
+
+      if (!this.audioCtx) {
+        throw new Error('Web Audio API is not supported.');
+      }
+
+      if (this.bufferSource) {
+        console.log('stop');
+        this.bufferSource.stop(0);
+        this.bufferSource = null;
+      }
+
+      this.bufferSource = this.audioCtx.createBufferSource();
+      this.bufferSource.buffer = this[data + 'AudioBuffer'];
+      this.bufferSource.connect(this.audioCtx.destination);
+      this.bufferSource.start(0);
+    }
+  });
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+  window.ga = window.ga || function() {
+      (ga.q = ga.q || []).push(arguments)
+    };
+  ga.l = +new Date;
+  ga('create', 'UA-207391-21', {
+    'siteSpeedSampleRate': 100,
+    'forceSSL': true,
+    'anonymizeIp': true,
+
+    // Disabling cookies.
+    // @see https://developers.google.com/analytics/devguides/collection/
+    //    analyticsjs/cookies-user-id#disabling_cookies
+    'storage': 'none',
+    'clientId': localStorage.getItem('gaClientId'),
+  });
+  // Using localStorage to store the client ID.
+  // @see https://developers.google.com/analytics/devguides/collection/
+  //    analyticsjs/cookies-user-id#using_localstorage_to_store_the_client_id
+  ga(function(tracker) {
+    localStorage.setItem('gaClientId', tracker.get('clientId'));
+  });
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<a-scene debug>
+  <a-assets>
+    <img id="ja-culture"
+         src="img/3-culture-and-personality.jpg">
+    <img id="en-culture"
+         src="img/3-culture-and-personality-en.jpg">
+  </a-assets>
+
+  <a-box position="-2 -3 0"
+         scale="2 2 2"
+         color="pink"
+         change-culture="value:en;"></a-box>
+  <a-box position="2 -3 0"
+         scale="2 2 2"
+         color="lightblue"
+         change-culture="value:ja;"></a-box>
+
+  <a-camera>
+    <a-cursor></a-cursor>
+  </a-camera>
+
+  <a-sky id="sky"
+         src="#ja-culture"
+         rotation="0 -90 0"></a-sky>
+</a-scene>
+</body>
+</html>
