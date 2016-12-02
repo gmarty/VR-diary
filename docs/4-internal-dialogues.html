@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>VR View - Internal dialogues</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no,minimal-ui">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="black">
+<script src="js/aframe.min.js"></script>
+<script src="js/aframe-bmfont-text-component.js"></script>
+<script>
+  AFRAME.registerComponent('show-text', {
+    schema: {
+      value: { default: '' },
+    },
+
+    init: function() {
+      this.mouseenter = this.mouseenter.bind(this);
+      this.mouseleave = this.mouseleave.bind(this);
+      this.el.addEventListener('mouseenter', this.mouseenter);
+      this.el.addEventListener('mouseleave', this.mouseleave);
+    },
+
+    mouseenter: function() {
+      const selector = this.data.value;
+      const el = document.querySelector(selector);
+      el.removeAttribute('visible');
+    },
+
+    mouseleave: function() {
+      const selector = this.data.value;
+      const el = document.querySelector(selector);
+      setTimeout(function() {
+        el.setAttribute('visible', 'false');
+      }, 300);
+    }
+  });
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+  window.ga = window.ga || function() {
+      (ga.q = ga.q || []).push(arguments)
+    };
+  ga.l = +new Date;
+  ga('create', 'UA-207391-21', {
+    'siteSpeedSampleRate': 100,
+    'forceSSL': true,
+    'anonymizeIp': true,
+
+    // Disabling cookies.
+    // @see https://developers.google.com/analytics/devguides/collection/
+    //    analyticsjs/cookies-user-id#disabling_cookies
+    'storage': 'none',
+    'clientId': localStorage.getItem('gaClientId'),
+  });
+  // Using localStorage to store the client ID.
+  // @see https://developers.google.com/analytics/devguides/collection/
+  //    analyticsjs/cookies-user-id#using_localstorage_to_store_the_client_id
+  ga(function(tracker) {
+    localStorage.setItem('gaClientId', tracker.get('clientId'));
+  });
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<a-scene debug>
+  <a-assets>
+    <img id="sky-texture"
+         src="img/4-internal-dialogues.jpg">
+  </a-assets>
+
+  <a-entity position="0 0 -3">
+    <a-entity id="thought1"
+              visible="false"
+              bmfont-text="color: black; text: These tiles reminds
+                me of Azulejos but in
+                a much cruder form."
+              position="-0.75 0.5 0"
+              rotation="0 0 0"
+              scale="1 1 1"></a-entity>
+    <a-box scale=".5 .5 .5"
+           color="white"
+           show-text="value:#thought1;">
+      <a-animation to="0 -360 0"
+                   easing="linear"
+                   dur="3000"
+                   repeat="indefinite"/>
+    </a-box>
+  </a-entity>
+
+  <a-entity position="5 1.5 0">
+    <a-entity id="thought2"
+              visible="false"
+              bmfont-text="color: black; text: Probably the worst
+                KFC I've ever been to."
+              position="0 0.5 -1"
+              rotation="0 -90 0"
+              scale="1 1 1"></a-entity>
+    <a-box scale=".5 .5 .5"
+           color="white"
+           show-text="value:#thought2;">
+      <a-animation to="0 -360 0"
+                   easing="linear"
+                   dur="3000"
+                   repeat="indefinite"/>
+    </a-box>
+  </a-entity>
+
+  <a-entity position="0 1.5 3">
+    <a-entity id="thought3"
+              visible="false"
+              bmfont-text="color: black; text: I had garlic ramen
+                and gyoza on my first
+                night there."
+              position="1 0.5 0"
+              rotation="0 180 0"
+              scale="1 1 1"></a-entity>
+    <a-box scale=".5 .5 .5"
+           color="white"
+           show-text="value:#thought3;">
+      <a-animation to="0 -360 0"
+                   easing="linear"
+                   dur="3000"
+                   repeat="indefinite"/>
+    </a-box>
+  </a-entity>
+
+  <a-entity position="-4 1.5 0">
+    <a-entity id="thought4"
+              visible="false"
+              bmfont-text="color: black; text: I like the T-shirt that
+              Graeme brought me
+              from Stockholm."
+              position=".5 0.5 0"
+              rotation="0 80 0"
+              scale="1 1 1"></a-entity>
+    <a-box scale=".5 .5 .5"
+           color="white"
+           show-text="value:#thought4;">
+      <a-animation to="0 -360 0"
+                   easing="linear"
+                   dur="3000"
+                   repeat="indefinite"/>
+    </a-box>
+  </a-entity>
+
+  <a-camera>
+    <a-cursor></a-cursor>
+  </a-camera>
+
+  <a-sky src="#sky-texture"></a-sky>
+</a-scene>
+</body>
+</html>
