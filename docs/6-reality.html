@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>VR View - To end it with the reality</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no,minimal-ui">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="black">
+<style>
+  .play-button {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+</style>
+<script src="js/aframe.min.js"></script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+  window.ga = window.ga || function() {
+      (ga.q = ga.q || []).push(arguments)
+    };
+  ga.l = +new Date;
+  ga('create', 'UA-207391-21', {
+    'siteSpeedSampleRate': 100,
+    'forceSSL': true,
+    'anonymizeIp': true,
+
+    // Disabling cookies.
+    // @see https://developers.google.com/analytics/devguides/collection/
+    //    analyticsjs/cookies-user-id#disabling_cookies
+    'storage': 'none',
+    'clientId': localStorage.getItem('gaClientId'),
+  });
+  // Using localStorage to store the client ID.
+  // @see https://developers.google.com/analytics/devguides/collection/
+  //    analyticsjs/cookies-user-id#using_localstorage_to_store_the_client_id
+  ga(function(tracker) {
+    localStorage.setItem('gaClientId', tracker.get('clientId'));
+  });
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<button class="play-button">Loading</button>
+<a-scene debug>
+  <a-assets>
+    <video id="sky-texture"
+           src="img/6-reality.mp4"
+           loop="true"
+           autoplay
+           webkit-playsinline></video>
+  </a-assets>
+
+  <a-sky src="#sky-texture"
+         rotation="0 -150 0"></a-sky>
+</a-scene>
+<script>
+  window.addEventListener('load', function() {
+    const v = document.querySelector('video');
+    const el = document.querySelector('.play-button');
+    if (v && !v.paused) {
+      el.style.display = 'none';
+      return;
+    }
+
+    el.innerText = 'Begin the experiment';
+
+    el.addEventListener('click', function() {
+      this.style.display = 'none';
+      v.play();
+    });
+  });
+</script>
+</body>
+</html>
